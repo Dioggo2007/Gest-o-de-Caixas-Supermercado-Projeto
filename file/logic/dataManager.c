@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../../header/logic/errorlogs.h"
 
 #include "../../header/logic/struct.h"
 
@@ -26,7 +27,9 @@ int countLines(const char *path) {
 int readProductData(Produto **lista, int *totalProdutos) {
     int linhas = countLines(PRODUTOS_PATH);
     if (linhas <= 0) {
-        printf("Erro: Nenhum produto encontrado!\n");
+        createLog("ERROR", "Nenhum produto encontrado no ficheiro txt");
+        /*printf("Erro: Nenhum produto encontrado!\n");
+        printf("%*c");*/
         return 0;
     }
 
@@ -37,8 +40,9 @@ int readProductData(Produto **lista, int *totalProdutos) {
     *lista = (Produto *)malloc(linhas * sizeof(Produto));
     if (*lista == NULL)
     {
-        printf("Erro: Memória insuficiente para alocar produtos\n");
-        scanf("%*c");
+        createLog("ERROR", "Memória insuficiente para alocar produtos!");
+        /*printf("Erro: Memória insuficiente para alocar produtos!\n");
+        scanf("%*c");*/
         fclose(f);
         return 0;
     }
@@ -65,8 +69,10 @@ int readProductData(Produto **lista, int *totalProdutos) {
 
 int readFuncionario(Funcionario **lista, int *totalFuncionarios) {
     int linhas = countLines(FUNCIONARIOS_PATH);
-    if (linhas <= 0) {
-        printf("Erro: Nenhum produto encontrado!\n");
+    if (1) {
+        createLog("ERROR", "Nenhum funcionario encontrado no ficheiro txt");
+        /*printf("Erro: Nenhum funcionario encontrado!\n");
+        printf("%*c");*/
         return 0;
     }
 
@@ -77,8 +83,9 @@ int readFuncionario(Funcionario **lista, int *totalFuncionarios) {
     *lista = (Funcionario *)malloc(linhas * sizeof(Funcionario));
     if (*lista == NULL)
     {
-        printf("Erro: Memória insuficiente para alocar funcionarios\n");
-        scanf("%*c");
+        createLog("ERROR", "Memória insuficiente para alocar funcionarios!");
+        /*printf("Erro: Memória insuficiente para alocar funcionarios!\n");
+        scanf("%*c");*/
         fclose(f);
         return 0;
     }
@@ -101,7 +108,9 @@ int readFuncionario(Funcionario **lista, int *totalFuncionarios) {
 int readClient(Cliente **lista, int *totalClientes) {
     int linhas = countLines(CLIENTES_PATH);
     if (linhas <= 0) {
-        printf("Erro: Nenhum produto encontrado!\n");
+        createLog("ERROR", "Nenhum cliente encontrado no ficheiro txt");
+        /*printf("Erro: Nenhum cliente encontrado!\n");
+        printf("%*c");*/
         return 0;
     }
 
@@ -112,8 +121,9 @@ int readClient(Cliente **lista, int *totalClientes) {
     *lista = (Cliente *)malloc(linhas * sizeof(Cliente));
     if (*lista == NULL)
     {
-        printf("Erro: Memória insuficiente para alocar Clientes\n");
-        scanf("%*c");
+        createLog("ERROR", "Memória insuficiente para alocar clientes");
+        /*printf("Erro: Memória insuficiente para alocar clientes\n");
+        scanf("%*c");*/
         fclose(f);
         return 0;
     }

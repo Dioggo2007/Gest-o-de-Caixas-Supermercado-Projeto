@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "header/logic/struct.h"
 #include "header/logic/dataManager.h"
+#include "header/frame/printError.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -22,22 +23,18 @@ int main(void) {
     int totalFuncionarios = 0;
 
     if (!readProductData(&produtos, &totalProdutos)) {
-        printf("Erro ao ler os produtos do ficheiro.");
-        scanf("%*c");
+        printError("Erro ao ler os produtos do ficheiro! Verificar ficheiros de logs.");
         return 0;
     }
-
     if (!readFuncionario(&funcionarios, &totalFuncionarios)) {
-        printf("Erro ao ler os funcionarios do ficheiro.");
-        scanf("%*c");
+        printError("Erro ao ler os funcionarios do ficheiro! Verificar ficheiros de logs.");
+        return 0;
+    }
+    if (!readClient(&clientes, &totalClientes)) {
+        printError("Erro ao ler os clientes do ficheiro! Verificar ficheiros de logs.");
         return 0;
     }
 
-    if (!readClient(&clientes, &totalClientes)) {
-        printf("Erro ao ler os clientes do ficheiro.");
-        scanf("%*c");
-        return 0;
-    }
     for (int i = 0; i < 10; i++) {
         printf("Funcionario %d:\n", i + 1);
         printf("id: %d\n", funcionarios[i].id);

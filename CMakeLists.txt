@@ -7,4 +7,8 @@ add_executable(Gest_o_de_Caixas_Supermercado_Projeto main.c
         header/logic/struct.h
         file/logic/dataManager.c
         header/logic/dataManager.h
-        db/)
+        db/
+        file/logic/errorlogs.c
+        header/logic/errorlogs.h
+        file/frame/printError.c
+        header/frame/printError.h)
