@@ -18,7 +18,9 @@ typedef struct {
 typedef struct {
     int id;
     char name[50];
-}Cliente;
+    float tempoChegadaFila;//Tempo que demorou a pegar nos produtos da loja
+    float tempoEstimadoSaida;//Calculos dos
+} Cliente;
 
 typedef struct {
     int id;
@@ -27,6 +29,25 @@ typedef struct {
 
 typedef struct {
     int id;
-}ListaCaixa;
+    int state; // 1: Aberto; 0: Fechado
+    Funcionario *resp;
+}Caixa;
+
+typedef struct clientList { // "No" dos Clientes
+    Cliente *client;
+    struct clientList *next;
+    struct clientList *prev;
+}ListaCliente;
+
+typedef struct {
+    int numClients;
+    ListaCliente *head;
+    ListaCliente *tail;
+} Fila;
+
+typedef struct { //Hashing, ordenar pela caixa
+    Caixa *cashier;
+    Fila *fila;
+}FilaCaixa;
 
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_STRUCT_H
