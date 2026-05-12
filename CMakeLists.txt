@@ -11,4 +11,10 @@ add_executable(Gest_o_de_Caixas_Supermercado_Projeto main.c
         file/logic/errorlogs.c
         header/logic/errorlogs.h
         file/frame/printError.c
-        header/frame/printError.h)
+        header/frame/printError.h
+        file/logic/queueManager.c
+        header/logic/queueManager.h
+        file/logic/init.c
+        header/logic/init.h
+        file/frame/menuPrints.c
+        header/frame/menuPrints.h)
