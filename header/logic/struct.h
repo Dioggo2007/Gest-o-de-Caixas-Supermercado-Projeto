@@ -50,4 +50,13 @@ typedef struct { //Hashing, ordenar pela caixa
     Fila *fila;
 }FilaCaixa;
 
+typedef struct {
+    int MAX_ESPERA;
+    int N_CAIXAS;
+    int TEMPO_ATENDIMENTO;
+    int MAX_PRECO;
+    int MAX_FILA;
+    int MIN_FILA;
+}Dados;
+
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_STRUCT_H

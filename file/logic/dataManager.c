@@ -7,7 +7,9 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../../header/logic/errorlogs.h"
+#include "../../header/frame/printError.h"
 
 #include "../../header/logic/struct.h"
 
@@ -18,13 +20,13 @@ int countLines(const char *path) {
     int linhas = 0;
     char buffer[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
-        if (buffer[0] != '\n') linhas++; // Evita contar linhas vazias
+        if (buffer[0] != '\n') linhas++;
     }
     fclose(f);
     return linhas;
 }
 
-int readProductData(Produto **lista, int *totalProdutos) {
+Produto *readProductData(int *totalProdutos) {
     int linhas = countLines(PRODUTOS_PATH);
     if (linhas <= 0) {
         createLog("ERROR", "Nenhum produto encontrado no ficheiro txt");
@@ -34,17 +36,22 @@ int readProductData(Produto **lista, int *totalProdutos) {
     }
 
     FILE *f = fopen(PRODUTOS_PATH, "r");
-    if (f == NULL) return 0;
+    if (f == NULL) {
+        createLog("ERROR", "Não foi possivel abrir o ficheiro dos Produtos!");
+        return NULL;
+    }
 
     //Alocar memoria
-    *lista = (Produto *)malloc(linhas * sizeof(Produto));
-    if (*lista == NULL)
+    Produto *lista = (Produto *)malloc(linhas * sizeof(Produto));
+
+    if (lista == NULL)
     {
         createLog("ERROR", "Memória insuficiente para alocar produtos!");
         /*printf("Erro: Memória insuficiente para alocar produtos!\n");
         scanf("%*c");*/
+        free(lista);
         fclose(f);
-        return 0;
+        return NULL;
     }
 
     // Ler os produtos
@@ -52,41 +59,45 @@ int readProductData(Produto **lista, int *totalProdutos) {
     int i = 0;
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^[] [%[^]]] %d gr %f %f %f",
-            &(*lista)[i].id,
-            (*lista)[i].name,
-            (*lista)[i].brand,
-            &(*lista)[i].weight,
-            &(*lista)[i].price,
-            &(*lista)[i].purchaseTime,
-            &(*lista)[i].cashierTime
+            &lista[i].id,
+            lista[i].name,
+            lista[i].brand,
+            &lista[i].weight,
+            &lista[i].price,
+            &lista[i].purchaseTime,
+            &lista[i].cashierTime
             );
         i++;
     }
     *totalProdutos = linhas;
     fclose(f);
-    return 1;
+    return lista;
 }
 
-int readFuncionario(Funcionario **lista, int *totalFuncionarios) {
+Funcionario *readFuncionario(int *totalFuncionarios) {
     int linhas = countLines(FUNCIONARIOS_PATH);
-    if (1) {
+    if (linhas <= 0) {
         createLog("ERROR", "Nenhum funcionario encontrado no ficheiro txt");
         /*printf("Erro: Nenhum funcionario encontrado!\n");
         printf("%*c");*/
-        return 0;
+        return NULL;
     }
 
     FILE *f = fopen(FUNCIONARIOS_PATH, "r");
-    if (f == NULL) return 0;
+    if (f == NULL) {
+        createLog("ERROR", "Não foi possivel abrir o ficheiro de funcionarios!");
+        return NULL;
+    }
 
     //Alocar memoria
-    *lista = (Funcionario *)malloc(linhas * sizeof(Funcionario));
-    if (*lista == NULL)
+    Funcionario *lista = (Funcionario *)malloc(linhas * sizeof(Funcionario));
+    if (lista == NULL)
     {
         createLog("ERROR", "Memória insuficiente para alocar funcionarios!");
         /*printf("Erro: Memória insuficiente para alocar funcionarios!\n");
         scanf("%*c");*/
         fclose(f);
+        free(lista);
         return 0;
     }
 
@@ -95,17 +106,17 @@ int readFuncionario(Funcionario **lista, int *totalFuncionarios) {
     int i = 0;
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^\n]",
-            &(*lista)[i].id,
-            (*lista)[i].name
+            &lista[i].id,
+            lista[i].name
             );
         i++;
     }
     *totalFuncionarios = linhas;
     fclose(f);
-    return 1;
+    return lista;
 }
 
-int readClient(Cliente **lista, int *totalClientes) {
+Cliente *readClient(int *totalClientes) {
     int linhas = countLines(CLIENTES_PATH);
     if (linhas <= 0) {
         createLog("ERROR", "Nenhum cliente encontrado no ficheiro txt");
@@ -115,16 +126,20 @@ int readClient(Cliente **lista, int *totalClientes) {
     }
 
     FILE *f = fopen(CLIENTES_PATH, "r");
-    if (f == NULL) return 0;
+    if (f == NULL) {
+        createLog("ERROR", "Não foi possivel abrir o ficheiro de clientes!");
+        return 0;
+    }
 
     //Alocar memoria
-    *lista = (Cliente *)malloc(linhas * sizeof(Cliente));
-    if (*lista == NULL)
+    Cliente *lista = (Cliente *)malloc(linhas * sizeof(Cliente));
+    if (lista == NULL)
     {
         createLog("ERROR", "Memória insuficiente para alocar clientes");
         /*printf("Erro: Memória insuficiente para alocar clientes\n");
         scanf("%*c");*/
         fclose(f);
+        free(lista);
         return 0;
     }
 
@@ -133,12 +148,59 @@ int readClient(Cliente **lista, int *totalClientes) {
     int i = 0;
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^\n]",
-            &(*lista)[i].id,
-            (*lista)[i].name
+            &lista[i].id,
+            lista[i].name
             );
         i++;
     }
     *totalClientes = linhas;
     fclose(f);
-    return 1;
+    return lista;
+}
+
+Dados readConfig() {
+    Dados dados;
+    dados.MAX_ESPERA = 120;
+    dados.N_CAIXAS = 6;
+    dados.TEMPO_ATENDIMENTO = 6;
+    dados.MAX_PRECO = 40;
+    dados.MAX_FILA = 7;
+    dados.MIN_FILA = 3;
+
+    int linhas = countLines(CONFIG_PATH);
+    if (linhas <= 0) {
+        createLog("WARNING", "Está vazio ou não foi encontrado o ficheiro txt de configurações ficheiro txt!");
+        printError("Erro ao ler o ficheiro de configuração! Ira ser criado um novo com configurações padrão");
+        scanf("%*c");
+        return dados;
+    }
+    FILE *f = fopen(CONFIG_PATH, "r");
+    if (f == NULL) {
+        createLog("WARNING", "Não foi possivel abrir o ficheiro de configurações!");
+        printError("Erro ao ler o ficheiro de configuração! Ira ser criado um novo com configurações padrão");
+        scanf("%*c");
+        return dados;
+    }
+
+    char label[50];
+    int value;
+
+    while (fscanf(f, "%s %d", label, &value) != EOF) {
+        if (strcmp(label, "MAX_ESPERA") == 0) {
+            dados.MAX_ESPERA = value;
+        } else if (strcmp(label, "N_CAIXAS") == 0) {
+            dados.N_CAIXAS = value;
+        } else if ( strcmp(label, "TEMPO_ATENDIMENTO_PRODUTO") == 0) {
+            dados.TEMPO_ATENDIMENTO = value;
+        } else if (strcmp(label, "MAX_PRECO") == 0) {
+            dados.MAX_PRECO = value;
+        } else if (strcmp(label, "MAX_FILA") == 0) {
+            dados.MAX_FILA = value;
+        } else if (strcmp(label, "MIN_FILA") == 0) {
+            dados.MIN_FILA = value;
+        }
+    }
+
+    fclose(f);
+    return dados;
 }
