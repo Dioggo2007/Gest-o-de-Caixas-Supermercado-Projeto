@@ -57,16 +57,32 @@ Produto *readProductData(int *totalProdutos) {
     // Ler os produtos
     char buffer[TAMANHO_LINHA];
     int i = 0;
+    char nome[TAMANHO_LINHA];
+    char marca[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^[] [%[^]]] %d gr %f %f %f",
             &lista[i].id,
-            lista[i].name,
-            lista[i].brand,
+            nome,
+            marca,
             &lista[i].weight,
             &lista[i].price,
             &lista[i].purchaseTime,
             &lista[i].cashierTime
             );
+
+        lista[i].name = malloc(strlen(nome) + 1);
+        lista[i].brand = malloc(strlen(marca) + 1);
+
+        if (lista[i].name == NULL || lista[i].brand == NULL) {
+            createLog("ERROR", "Memória insuficiente para alocar produtos!");
+            free(lista);
+            fclose(f);
+            return NULL;
+        }
+
+        strcpy(lista[i].name, nome);
+        strcpy(lista[i].brand, marca);
+
         i++;
     }
     *totalProdutos = linhas;
@@ -98,17 +114,29 @@ Funcionario *readFuncionario(int *totalFuncionarios) {
         scanf("%*c");*/
         fclose(f);
         free(lista);
-        return 0;
+        return NULL;
     }
 
     // Ler os produtos
     char buffer[TAMANHO_LINHA];
     int i = 0;
+    char nome[TAMANHO_LINHA];
+
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^\n]",
             &lista[i].id,
-            lista[i].name
+            nome
             );
+        lista[i].name = malloc(strlen(nome) + 1);
+        if (lista[i].name == NULL) {
+            createLog("ERROR", "Memória insuficiente para alocar funcionarios!");
+            fclose(f);
+            free(lista);
+            return NULL;
+        }
+
+        strcpy(lista[i].name, nome);
+
         i++;
     }
     *totalFuncionarios = linhas;
@@ -146,11 +174,23 @@ Cliente *readClient(int *totalClientes) {
     // Ler os produtos
     char buffer[TAMANHO_LINHA];
     int i = 0;
+    char nome[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
         sscanf(buffer, "%d %[^\n]",
             &lista[i].id,
-            lista[i].name
+            nome
             );
+
+        lista[i].name = malloc(strlen(nome) + 1);
+        if (lista[i].name == NULL) {
+            createLog("ERROR", "Memória insuficiente para alocar Clientes!");
+            fclose(f);
+            free(lista);
+            return NULL;
+        }
+
+        strcpy(lista[i].name, nome);
+
         i++;
     }
     *totalClientes = linhas;

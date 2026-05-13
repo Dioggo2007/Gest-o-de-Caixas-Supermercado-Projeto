@@ -7,8 +7,8 @@
 
 typedef struct {
     int id;
-    char name[50];
-    char brand[50];
+    char *name;
+    char *brand;
     int weight;
     float price;
     float purchaseTime;
@@ -17,14 +17,14 @@ typedef struct {
 
 typedef struct {
     int id;
-    char name[50];
+    char *name;
     float tempoChegadaFila;//Tempo que demorou a pegar nos produtos da loja
     float tempoEstimadoSaida;//Calculos dos
 } Cliente;
 
 typedef struct {
     int id;
-    char name[50];
+    char *name;
 }Funcionario;
 
 typedef struct {
