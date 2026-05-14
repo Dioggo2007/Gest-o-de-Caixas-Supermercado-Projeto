@@ -55,16 +55,22 @@ Produto *readProductData(int *totalProdutos) {
     }
 
     // Ler os produtos
+
+
+    //AVISO PESO LER ATE UMA LETRA EXCLUINDO O X PEGAR NO TIPO DE PESO E DEPOIS OS FLOATS
     char buffer[TAMANHO_LINHA];
     int i = 0;
     char nome[TAMANHO_LINHA];
     char marca[TAMANHO_LINHA];
+    char pesoDescricao[TAMANHO_LINHA];
+    char tipoPeso[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
-        sscanf(buffer, "%d %[^[] [%[^]]] %d gr %f %f %f",
+        sscanf(buffer, "%d %[^[] [%[^]]] %[^a-wy-zA-WY-Z] %[^0-9] %f %f %f",
             &lista[i].id,
             nome,
             marca,
-            &lista[i].weight,
+            pesoDescricao,
+            tipoPeso,
             &lista[i].price,
             &lista[i].purchaseTime,
             &lista[i].cashierTime
@@ -72,6 +78,7 @@ Produto *readProductData(int *totalProdutos) {
 
         lista[i].name = malloc(strlen(nome) + 1);
         lista[i].brand = malloc(strlen(marca) + 1);
+        lista[i].weight = malloc(strlen(pesoDescricao) + strlen(tipoPeso) + 1);
 
         if (lista[i].name == NULL || lista[i].brand == NULL) {
             createLog("ERROR", "Memória insuficiente para alocar produtos!");
@@ -82,6 +89,8 @@ Produto *readProductData(int *totalProdutos) {
 
         strcpy(lista[i].name, nome);
         strcpy(lista[i].brand, marca);
+        strcat(pesoDescricao, tipoPeso);
+        strcpy(lista[i].weight, pesoDescricao);
 
         i++;
     }

@@ -9,7 +9,7 @@ typedef struct {
     int id;
     char *name;
     char *brand;
-    int weight;
+    char *weight;
     float price;
     float purchaseTime;
     float cashierTime;
