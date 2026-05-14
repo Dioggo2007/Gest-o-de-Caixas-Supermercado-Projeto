@@ -152,19 +152,26 @@ int main(void) {
         printf("cashierTime: %.2f\n", (listaProdutos[i].cashierTime == 0.00) ? 10000000 : listaProdutos[i].cashierTime);
     }*/
 
-    for (int i = 0; i < totalProdutos-1; i++) {
-        free(produtos[i].name);
-        free(produtos[i].brand);
-        free(produtos[i].weight);
+    for (int i = 0; i < totalProdutos; i++) {
+        if (produtos[i].name) free(produtos[i].name);
+        if (produtos[i].brand) free(produtos[i].brand);
+        if (produtos[i].weight) free(produtos[i].weight);
     }
     free(produtos);
-    for (int i = 0; i < totalClientes-1; i++)
+
+    for (int i = 0; i < totalClientes; i++) {
         free(clientes[i].name);
+        if (clientes[i].produtos != NULL)
+            free(clientes[i].produtos);
+    }
     free(clientes);
-    for(int i = 0; i < totalFuncionarios-1; i++)
+
+    for(int i = 0; i < totalFuncionarios; i++) {
         free(funcionarios[i].name);
+    }
     free(funcionarios);
 
+    scanf("%*c");
     scanf("%*c");
 
     return 0;

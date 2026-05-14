@@ -63,14 +63,13 @@ Produto *readProductData(int *totalProdutos) {
     char nome[TAMANHO_LINHA];
     char marca[TAMANHO_LINHA];
     char pesoDescricao[TAMANHO_LINHA];
-    char tipoPeso[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
-        sscanf(buffer, "%d %[^[] [%[^]]] %[^a-wy-zA-WY-Z] %[^0-9] %f %f %f",
+        if (buffer[0] == '\n') continue;
+        sscanf(buffer, "%d %[^[] [%[^]]] %[^\t] %f %f %f",
             &lista[i].id,
             nome,
             marca,
             pesoDescricao,
-            tipoPeso,
             &lista[i].price,
             &lista[i].purchaseTime,
             &lista[i].cashierTime
@@ -78,7 +77,7 @@ Produto *readProductData(int *totalProdutos) {
 
         lista[i].name = malloc(strlen(nome) + 1);
         lista[i].brand = malloc(strlen(marca) + 1);
-        lista[i].weight = malloc(strlen(pesoDescricao) + strlen(tipoPeso) + 1);
+        lista[i].weight = malloc(strlen(pesoDescricao) + 1);
 
         if (lista[i].name == NULL || lista[i].brand == NULL) {
             createLog("ERROR", "Memória insuficiente para alocar produtos!");
@@ -89,7 +88,6 @@ Produto *readProductData(int *totalProdutos) {
 
         strcpy(lista[i].name, nome);
         strcpy(lista[i].brand, marca);
-        strcat(pesoDescricao, tipoPeso);
         strcpy(lista[i].weight, pesoDescricao);
 
         i++;
@@ -132,6 +130,7 @@ Funcionario *readFuncionario(int *totalFuncionarios) {
     char nome[TAMANHO_LINHA];
 
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
+        if (buffer[0] == '\n') continue;
         sscanf(buffer, "%d %[^\n]",
             &lista[i].id,
             nome
@@ -185,6 +184,7 @@ Cliente *readClient(int *totalClientes) {
     int i = 0;
     char nome[TAMANHO_LINHA];
     while (fgets(buffer, sizeof(buffer), f) != NULL) {
+        if (buffer[0] == '\n') continue;
         sscanf(buffer, "%d %[^\n]",
             &lista[i].id,
             nome
@@ -199,6 +199,10 @@ Cliente *readClient(int *totalClientes) {
         }
 
         strcpy(lista[i].name, nome);
+        lista[i].tempoChegadaFila = 0.0;
+        lista[i].tempoEstimadoSaida = 0.0;
+        lista[i].totalProdutos = 0.0;
+        lista[i].produtos = NULL;
 
         i++;
     }
