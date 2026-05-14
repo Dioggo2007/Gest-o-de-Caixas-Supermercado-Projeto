@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <windows.h>
 
 #include "../../header/frame/menuPrints.h"
 #include "../../header/logic/struct.h"
@@ -103,12 +104,50 @@ void printLogs() {
 
 }
 
-void printFooter() {
-    /*Simulação | Caixas | Clientes | Outros*/
+void printFooter(int opcao) {
+    /*[1]Simulação | [2]Caixas | [3]Clientes | [4]Outros*/
     /*Iniciar Simulação   | Abrir/Fechar Caixa | Procurar Cliente  | Historico
      * Pausar Simulação   | Mudar Funcionario  | Adicionar Cliente | Utilização de memoria
      * Acelarar Simulação | Mostrar Clientes   | Remover Cliente   | Configurações
      * Reiniciar Simulação|
      */
-    printf("");
+    printf("---------------------------------------------------------------------------------\n");
+    switch (opcao) {
+        case 0:
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros");
+            break;
+        case 1:
+            printf("Opções: [1]Iniciar Simulação | [2]Acelarar Simulação | [3]Reiniciar Simulação");
+            break;
+        case 2:
+            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes");
+            break;
+        case 3:
+            printf("Opções: [1]Procurar Cliente | [2]Adicionar Cliente | [3] Remover Cliente");
+            break;
+        case 4:
+            printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações");
+            break;
+        default:
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros");
+            break;
+    }
+    printf("\n");
+}
+
+int escolherOpcaoMenuPrincipal(int numMin, int numMax)
+{
+    int opcao;
+    printf("Escolha uma opção: ");
+    scanf("%d", &opcao);
+    if (opcao < numMin || opcao > numMax)
+    {
+        system("cls");
+        printf("Opção inválida. Tente novamente.\n");
+        while (getchar() != '\n');
+        scanf("%*c"); // Limpar o buffer do teclado
+
+        return -1;
+    }
+    return opcao;
 }
