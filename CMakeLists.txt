@@ -17,4 +17,6 @@ add_executable(Gest_o_de_Caixas_Supermercado_Projeto main.c
         file/logic/init.c
         header/logic/init.h
         file/frame/menuPrints.c
-        header/frame/menuPrints.h)
+        header/frame/menuPrints.h
+        file/logic/simulationControl.c
+        header/logic/simulationControl.h)
