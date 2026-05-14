@@ -19,7 +19,9 @@ typedef struct {
     int id;
     char *name;
     float tempoChegadaFila;//Tempo que demorou a pegar nos produtos da loja
-    float tempoEstimadoSaida;//Calculos dos
+    float tempoEstimadoSaida;
+    Produto *produtos;
+    int totalProdutos;
 } Cliente;
 
 typedef struct {
