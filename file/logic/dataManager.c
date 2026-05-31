@@ -199,9 +199,12 @@ Cliente *readClient(int *totalClientes) {
         }
 
         strcpy(lista[i].name, nome);
+        lista[i].tempoChegadaLoja = 0.0;
         lista[i].tempoChegadaFila = 0.0;
-        lista[i].tempoEstimadoSaida = 0.0;
-        lista[i].totalProdutos = 0.0;
+        lista[i].tempoPassarProdutos = 2.0;
+        lista[i].tempoPegarProdutos = 0.0;
+        lista[i].totalProdutos = 0;
+        lista[i].custoTotalProdutos = 0;
         lista[i].produtos = NULL;
 
         i++;

@@ -73,7 +73,7 @@ void printCashiers(int page, FilaCaixa *lista, int nCaixasTotal) {
         if (lista[i].cashier->state == 0)
             sprintf(buffer, "Op: %-21s", "-----");
         else
-            sprintf(buffer,"Op: %-21s",
+            sprintf(buffer,"Op: %-21.21s",
                    lista[i].cashier->resp->name);
 
         //Se nao for o ultimo ou se for o primeiro e só for 1 para dar print
@@ -99,12 +99,61 @@ void printCashiers(int page, FilaCaixa *lista, int nCaixasTotal) {
     printf("\n");
 }
 
+void printCashierClients(FilaCaixa *lista, int nCaixasTotal) {
+    system("cls");
+    int n;
+    printf("Qual caixa quer ver os clientes?");
+    scanf("%d", &n);
+    if (n > nCaixasTotal) {
+        printf("Não existe nenhuma caixa %d", n);
+        scanf("%*c");
+        scanf("%*c");
+        return;
+    }
+    n--;
+    printf("*Caixa: %d\n", n+1);
+    printf("*Estado: %s\n", (lista[n].cashier->state) ? "Aberto" : "Fechado");
+    printf("*Responsavel: %s\n", (lista[n].cashier->resp != NULL) ? lista[n].cashier->resp->name : "Sem Responsavel Atribuido");
+    printf("--------------------------\n");
+    if (lista[n].fila->numClients != 0) {
+        ListaCliente *clientPrint = lista[n].fila->head;
+        for (int i = 0; i < lista[n].fila->numClients; i++) {
+            printf("**Cliente: %s\n", clientPrint->client->name);
+            printf("***Produtos: %d\n", clientPrint->client->totalProdutos);
+            for (int j = 0; j < clientPrint->client->totalProdutos; j++) {
+                printf("Produto: %s\n", clientPrint->client->produtos[j].name);
+            }
+            printf("**Preço total: %.2f\n", clientPrint->client->custoTotalProdutos);
+            printf("**Tempo pegar os produtos: %.2f\n", clientPrint->client->tempoPegarProdutos);
+            printf("**Tempo pagar os produtos: %.2f\n", clientPrint->client->tempoPassarProdutos);
+            printf("--------------------------\n");
+            clientPrint = clientPrint->prev;
+        }
+    }else {
+        printf("Sem Clientes\n");
+    }
+    printf("\nEnter para continuar...");
+    scanf("%*c");
+    scanf("%*c");
+    /*
+     *Caixa 1
+     *Estado Aberto/Fechado
+     *Funcionario: NOME
+     *
+     * Cliente: NOME
+     * Produtos: totalProdutos
+     *          NOME Produto
+                NOME Produto
+        Preço custoTotal
+     */
+}
+
 void printLogs() {
     printf("---------------------------------------------------------------------------------\n");
 
 }
 
-void printFooter(int opcao) {
+int printFooter(int opcao) {
     /*[1]Simulação | [2]Caixas | [3]Clientes | [4]Outros*/
     /*Iniciar Simulação   | Abrir/Fechar Caixa | Procurar Cliente  | Historico
      * Pausar Simulação   | Mudar Funcionario  | Adicionar Cliente | Utilização de memoria
@@ -114,23 +163,23 @@ void printFooter(int opcao) {
     printf("---------------------------------------------------------------------------------\n");
     switch (opcao) {
         case 0:
-            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros");
-            break;
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros | [5]Sair");
+            return 5;
         case 1:
-            printf("Opções: [1]Iniciar Simulação | [2]Acelarar Simulação | [3]Reiniciar Simulação");
-            break;
+            printf("Opções: [1]Iniciar Simulação | [2]Limpar Simulação | [3]Voltar");
+            return 3;
         case 2:
-            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes");
-            break;
+            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes | [4]Voltar");
+            return 4;
         case 3:
-            printf("Opções: [1]Procurar Cliente | [2]Adicionar Cliente | [3] Remover Cliente");
-            break;
+            printf("Opções: [1]Procurar Cliente | [2]Adicionar Cliente | [3] Remover Cliente | [4]Voltar");
+            return 4;
         case 4:
-            printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações");
-            break;
+            printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações | [4]Voltar");
+            return 4;
         default:
             printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros");
-            break;
+            return 4;
     }
     printf("\n");
 }

@@ -30,7 +30,7 @@ FilaCaixa *createFilaCaixa(int numCaixas) {
 
         caixa->id = i+1;
         caixa->state = 0;
-        caixa->resp = NULL;
+        caixa->resp = malloc(sizeof(Funcionario));
 
         fila->numClients = 0;
         fila->head = fila->tail = NULL;
@@ -52,16 +52,15 @@ Produto *generateProductList(Produto *produtos, int numTotalProdutos, int *nProd
         createLog("ERROR", "Memória insuficiente para alocar lista de produtos!");
         return NULL;
     }
-    printf("numProd: %d\n", numProd);
-    printf("numTotalProdutos: %d\n", numTotalProdutos);
+    /*printf("numProd: %d\n", numProd);
+    printf("numTotalProdutos: %d\n", numTotalProdutos);*/
 
-    //DUVIDA PERGUNTAR PROFESSOR
+
     for (int i = 0; i < numProd; i++) {
         int n = rand() % numTotalProdutos;
-        printf("aleatorio %d: ", n);
         listaProdutos[i] = produtos[n];
-        /*listaProdutos[i].id = produtos[n].id;
-        listaProdutos[i].name = strdup(produtos[n].name);
+        /*listaProdutos[i].id = produtos[n].id;*/
+        /*listaProdutos[i].name = strdup(produtos[n].name);
         listaProdutos[i].brand = strdup(produtos[n].brand);
         listaProdutos[i].weight = produtos[n].weight;
         listaProdutos[i].price = produtos[n].price;
@@ -70,4 +69,52 @@ Produto *generateProductList(Produto *produtos, int numTotalProdutos, int *nProd
     }
     *nProdutos = numProd;
     return listaProdutos;
+}
+
+Cliente generateCliente(Cliente *clientes, int numClientes, Produto *produtos, int numTotalProdutos) {
+    int numCliente = (rand() % numClientes);
+    Cliente cliente = clientes[numCliente];
+    cliente.produtos = generateProductList(produtos, numTotalProdutos, &cliente.totalProdutos);
+    /*for (int i = 0; i < cliente.totalProdutos; i++) {
+        printf("Produto %d do cliente %d:\n", i + 1, cliente.id);
+        printf("id: %d\n", cliente.produtos[i].id);
+        printf("nome: %s\n", cliente.produtos[i].name);
+        printf("brand: %s\n", cliente.produtos[i].brand);
+        printf("weight: %s\n", cliente.produtos[i].weight);
+        printf("price: %.2f\n", (cliente.produtos[i].price == 0.00) ? 10000000 : cliente.produtos[i].price);
+        printf("purchaseTime: %.2f\n", (cliente.produtos[i].purchaseTime == 0.00) ? 10000000 : cliente.produtos[i].purchaseTime);
+        printf("cashierTime: %.2f\n", (cliente.produtos[i].cashierTime == 0.00) ? 10000000 : cliente.produtos[i].cashierTime);
+    }*/
+    //calculo de tempo a pegar nos produtos e custo total
+    for (int i = 0; i < cliente.totalProdutos; i++) {
+        /*printf("Tempo chegada calculo %d %f", i, cliente.tempoChegadaFila);*/
+        cliente.tempoPegarProdutos += cliente.produtos[i].purchaseTime/60;
+        cliente.custoTotalProdutos += cliente.produtos[i].price;
+    }
+
+    //Calculo de tempo a passar os produtos na caixa
+    for (int i = 0; i < cliente.totalProdutos; i++) {
+        cliente.tempoPassarProdutos += cliente.produtos[i].cashierTime /60;
+    }
+
+    return cliente;
+}
+
+Funcionario generateFuncionario(Funcionario *funcionarios, int numFuncionarios) {
+    int numFuncionario = (rand() % numFuncionarios);
+    Funcionario funcionario = funcionarios[numFuncionario];
+    return funcionario;
+}
+
+Fila *createShoppingClientList() {
+    Fila *listaCliente = (Fila *)malloc(sizeof(Fila));
+    if (listaCliente == NULL) {
+        createLog("ERROR", "Memória insuficiente para alocar lista de clientes em compras!");
+        return NULL;
+    }
+    listaCliente->numClients = 0;
+    listaCliente->head = NULL;
+    listaCliente->tail = NULL;
+
+    return listaCliente;
 }

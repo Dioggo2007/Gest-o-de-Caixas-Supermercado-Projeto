@@ -10,8 +10,11 @@
 int addToQueue(Cliente *client, Fila *fila);
 
 //Remover Cliente da lista
-int removeFromQueue(Cliente *client, Fila *fila);
+int removeFromQueue(Fila *fila);
 
-int queueSize(FilaCaixa caixa);
+int removeSpecificClient(Fila *fila, int idCliente);
+
+int removeLastFromQueue(Fila *fila);
+
 
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_QUEUEMANAGER_H

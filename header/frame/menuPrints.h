@@ -16,9 +16,11 @@ void printHeader(int time, int nCaixas, int nCaixasTotal, float vendas);
 
 void printCashiers(int page, FilaCaixa *lista, int nCaixasTotal);
 
+void printCashierClients(FilaCaixa *lista, int nCaixasTotal);
+
 void printLogs();
 
-void printFooter(int opcao);
+int printFooter(int opcao);
 
 int escolherOpcaoMenuPrincipal(int numMin, int numMax);
 

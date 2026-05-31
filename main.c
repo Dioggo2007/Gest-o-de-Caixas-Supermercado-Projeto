@@ -42,7 +42,7 @@ int main(void) {
         return 0;
     }
 
-    int totalCaixasAbertas = 0;
+    int totalCaixasAbertas = 1;
     Dados config = readConfig();
 
     float vendas = 0;
@@ -51,34 +51,34 @@ int main(void) {
 
     int tempo = 0;
     int clienteAtivos = 0;
+    Fila *clientesEmCompra = createShoppingClientList();
 
     int sair = 1;
 
     //Inicializar as caixas com as filas
     FilaCaixa *filaCaixas = createFilaCaixa(config.N_CAIXAS);
-
     if (filaCaixas == NULL) {
         printError("Erro ao inicializar as Caixas! Verifique o ficheiro de logs.");
         return 0;
     }
+    filaCaixas[0].cashier->state = 1;
+    *filaCaixas[0].cashier->resp = generateFuncionario(funcionarios, totalFuncionarios);
 
     do {
         system("cls");
 
         printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
         printCashiers(page, filaCaixas, config.N_CAIXAS);
-        printFooter(0);
 
-        switch (escolherOpcaoMenuPrincipal(0, 5)) {
+        switch (escolherOpcaoMenuPrincipal(0, printFooter(0))) {
             case 1://Simulação
                 system("cls");
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
-                printFooter(1);
-                switch (escolherOpcaoMenuPrincipal(0, 3)) {
+                switch (escolherOpcaoMenuPrincipal(0, printFooter(1))) {
                     case 1:
                         system("cls");
-                        startSimulation(&tempo, 1, filaCaixas, &totalCaixasAbertas, &vendas, config);
+                        startSimulation(&tempo, filaCaixas, &totalCaixasAbertas, &vendas, config, clientesEmCompra, &clienteAtivos, clientes, totalClientes, produtos, totalProdutos, funcionarios, totalFuncionarios);
                     default:
                         break;
                 }
@@ -87,8 +87,10 @@ int main(void) {
                 system("cls");
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
-                printFooter(2);
-                switch (escolherOpcaoMenuPrincipal(0, 3)) {
+                switch (escolherOpcaoMenuPrincipal(0, printFooter(2))) {
+                    case 3:
+                        printCashierClients(filaCaixas, config.N_CAIXAS);
+                        break;
                     default:
                         break;
                 }
@@ -97,8 +99,7 @@ int main(void) {
                 system("cls");
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
-                printFooter(3);
-                switch (escolherOpcaoMenuPrincipal(0, 3)) {
+                switch (escolherOpcaoMenuPrincipal(0, printFooter(3))) {
                     default:
                         break;
                 }
@@ -107,8 +108,7 @@ int main(void) {
                 system("cls");
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
-                printFooter(4);
-                switch (escolherOpcaoMenuPrincipal(0, 3)) {
+                switch (escolherOpcaoMenuPrincipal(0, printFooter(4))) {
                     default:
                         break;
                 }
@@ -132,25 +132,29 @@ int main(void) {
         printf("Funcionario %d:\n", i + 1);
         printf("id: %d\n", funcionarios[i].id);
         printf("nome: %s\n", funcionarios[i].name);
-    }
-    for (int i = 0; i < 10; i++) {
+    }*/
+    /*for (int i = 0; i < 10; i++) {
+        Cliente randomCliente = generateCliente(clientes, totalClientes, produtos, totalProdutos);
         printf("Cliente %d:\n", i + 1);
-        printf("id: %d\n", clientes[i].id);
-        printf("nome: %s\n", clientes[i].name);
+        printf("id: %d\n", randomCliente.id);
+        printf("nome: %s\n", randomCliente.name);
+        printf("tempoChegadaFila: %f\n", randomCliente.tempoChegadaFila);
+        printf("tempoEstimadoSaida: %f\n", randomCliente.tempoEstimadoSaida);
+        printf("totalProdutos: %d\n", randomCliente.totalProdutos);
     }*/
 
-    int nProdutos;
-    Produto *listaProdutos = generateProductList(produtos, totalProdutos, &nProdutos);
-    /*for (int i = 0; i < nProdutos; i++) {
+    /*int nProdutos;
+    Produto *listaProdutos = generateProductList(produtos, totalProdutos, &nProdutos);*/
+    for (int i = 0; i < 11; i++) {
         printf("Produto %d:\n", i + 1);
-        printf("id: %d\n", listaProdutos[i].id);
-        printf("nome: %s\n", listaProdutos[i].name);
-        printf("brand: %s\n", listaProdutos[i].brand);
-        printf("weight: %s\n", listaProdutos[i].weight);
-        printf("price: %.2f\n", (listaProdutos[i].price == 0.00) ? 10000000 : listaProdutos[i].price);
-        printf("purchaseTime: %.2f\n", (listaProdutos[i].purchaseTime == 0.00) ? 10000000 : listaProdutos[i].purchaseTime);
-        printf("cashierTime: %.2f\n", (listaProdutos[i].cashierTime == 0.00) ? 10000000 : listaProdutos[i].cashierTime);
-    }*/
+        printf("id: %d\n", produtos[i].id);
+        printf("nome: %s\n", produtos[i].name);
+        printf("brand: %s\n", produtos[i].brand);
+        printf("weight: %s\n", produtos[i].weight);
+        printf("price: %.2f\n", (produtos[i].price == 0.00) ? 10000000 : produtos[i].price);
+        printf("purchaseTime: %.2f\n", (produtos[i].purchaseTime == 0.00) ? 10000000 : produtos[i].purchaseTime);
+        printf("cashierTime: %.2f\n", (produtos[i].cashierTime == 0.00) ? 10000000 : produtos[i].cashierTime);
+    }
 
     for (int i = 0; i < totalProdutos; i++) {
         if (produtos[i].name) free(produtos[i].name);

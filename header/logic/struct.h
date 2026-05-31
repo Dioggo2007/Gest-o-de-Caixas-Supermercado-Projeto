@@ -11,17 +11,20 @@ typedef struct {
     char *brand;
     char *weight;
     float price;
-    float purchaseTime;
-    float cashierTime;
+    float purchaseTime;//Tempo de ir buscar o produto
+    float cashierTime;//Tempo de pagar o produto
 }Produto;
 
 typedef struct {
     int id;
     char *name;
-    float tempoChegadaFila;//Tempo que demorou a pegar nos produtos da loja
-    float tempoEstimadoSaida;
+    float tempoChegadaLoja;
+    float tempoChegadaFila;//Horas que chegou à caixa
+    float tempoPegarProdutos;//Tempo que demorou a pegar nos produtos da loja
+    float tempoPassarProdutos;// Tempo que demora a passar na caixa
     Produto *produtos;
     int totalProdutos;
+    float custoTotalProdutos;
 } Cliente;
 
 typedef struct {
@@ -35,7 +38,7 @@ typedef struct {
     Funcionario *resp;
 }Caixa;
 
-typedef struct clientList { // "No" dos Clientes
+typedef struct clientList {
     Cliente *client;
     struct clientList *next;
     struct clientList *prev;
@@ -47,7 +50,7 @@ typedef struct {
     ListaCliente *tail;
 } Fila;
 
-typedef struct { //Hashing, ordenar pela caixa
+typedef struct {
     Caixa *cashier;
     Fila *fila;
 }FilaCaixa;
