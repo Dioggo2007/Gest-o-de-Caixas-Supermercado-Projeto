@@ -119,6 +119,7 @@ void printCashierClients(FilaCaixa *lista, int nCaixasTotal) {
         ListaCliente *clientPrint = lista[n].fila->head;
         for (int i = 0; i < lista[n].fila->numClients; i++) {
             printf("**Cliente: %s\n", clientPrint->client->name);
+            printf("**ID: %d\n", clientPrint->client->id);
             printf("***Produtos: %d\n", clientPrint->client->totalProdutos);
             for (int j = 0; j < clientPrint->client->totalProdutos; j++) {
                 printf("Produto: %s\n", clientPrint->client->produtos[j].name);
@@ -163,25 +164,40 @@ int printFooter(int opcao) {
     printf("---------------------------------------------------------------------------------\n");
     switch (opcao) {
         case 0:
-            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros | [5]Sair");
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros | [5]Sair\n");
             return 5;
         case 1:
-            printf("Opções: [1]Iniciar Simulação | [2]Limpar Simulação | [3]Voltar");
+            printf("Opções: [1]Iniciar Simulação | [2]Limpar Simulação | [3]Voltar\n");
             return 3;
         case 2:
-            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes | [4]Voltar");
+            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes | [4]Voltar\n");
             return 4;
         case 3:
-            printf("Opções: [1]Procurar Cliente | [2]Adicionar Cliente | [3] Remover Cliente | [4]Voltar");
-            return 4;
+            printf("Opções: [1]Procurar Cliente Nome | [2]Procurar Cliente Id | [3]Adicionar Cliente | [4]Remover Cliente | [5]Voltar\n");
+            return 5;
         case 4:
-            printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações | [4]Voltar");
+            printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações | [4]Voltar\n");
             return 4;
         default:
-            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros");
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros\n");
             return 4;
     }
-    printf("\n");
+}
+
+void printClient(Cliente *client, int nCaixa) {
+    system("cls");
+    printf("*Cliente: %s\n", client->name);
+    if (nCaixa != -1)
+        printf("*Caixa: %d\n", nCaixa);
+    else
+        printf("*Na loja");
+    printf("**Produtos: %d\n", client->totalProdutos);
+    for (int j = 0; j < client->totalProdutos; j++) {
+        printf("***Produto: %s\n", client->produtos[j].name);
+    }
+    printf("**Preço total: %.2f\n", client->custoTotalProdutos);
+    printf("**Tempo pegar os produtos: %.2f\n", client->tempoPegarProdutos);
+    printf("**Tempo pagar os produtos: %.2f\n", client->tempoPassarProdutos);
 }
 
 int escolherOpcaoMenuPrincipal(int numMin, int numMax)

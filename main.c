@@ -7,6 +7,8 @@
 #include "header/logic/simulationControl.h"
 
 #include <time.h>
+
+#include "header/logic/controlFunctions.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -100,6 +102,12 @@ int main(void) {
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(3))) {
+                    case 1:
+                        searchClientName(clientesEmCompra, filaCaixas, config);
+                        break;
+                    case 2:
+                        searchClientId(clientesEmCompra, filaCaixas, config);
+                        break;
                     default:
                         break;
                 }

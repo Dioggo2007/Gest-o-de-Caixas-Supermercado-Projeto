@@ -22,6 +22,8 @@ void printLogs();
 
 int printFooter(int opcao);
 
+void printClient(Cliente *client, int nCaixa);
+
 int escolherOpcaoMenuPrincipal(int numMin, int numMax);
 
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_MENUPRINTS_H
