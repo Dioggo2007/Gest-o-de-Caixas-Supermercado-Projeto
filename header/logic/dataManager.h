@@ -13,6 +13,7 @@
 #define FUNCIONARIOS_PATH "db/funcionarios.txt"
 #define CLIENTES_PATH "db/clientes.txt"
 #define CONFIG_PATH "db/config.txt"
+#define SIMULATIONHISTORY_PATH "db/historial_simulacoes.csv"
 #define TAMANHO_LINHA 100
 
 //Função util para contar linhas e diminuir linhas de codigo repetidas
@@ -37,5 +38,7 @@ Dados readConfig();
 // Escrever novos dados de configuração no ficheiro config.txt
 // Retorna 1 se sucesso, 0 se erro
 int writeConfig(Dados *config);
+
+int saveSimulationHistory(int nSimulation, int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas);
 
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_DATAMANAGER_H

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../../header/logic/errorlogs.h"
 #include "../../header/frame/printError.h"
 
@@ -259,4 +260,24 @@ Dados readConfig() {
 
     fclose(f);
     return dados;
+}
+
+int saveSimulationHistory(int nSimulation, int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas) {
+    FILE *f = fopen(SIMULATIONHISTORY_PATH, "a");
+
+    if (!f) {
+        // Error in file opening
+        printf("Can't open file\n");
+        return 0;
+    }
+
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    char data_hora[20];
+    strftime(data_hora, sizeof(data_hora), "%d-%m-%Y-%H:%M:%S", t);
+
+    fprintf(f, " %s; %d; %d; %d; %.2f; %.2f\n", data_hora, tempo, clientesAtendidos, produtosVendidos, tempoMedio/clientesAtendidos, vendas);
+
+    fclose(f);
+    return 1;
 }

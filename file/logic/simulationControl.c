@@ -8,6 +8,7 @@
 #include "../../header/frame/menuPrints.h"
 #include "../../header/logic/init.h"
 #include "../../header/logic/queueManager.h"
+#include "../../header/logic/dataManager.h"
 
 #include <stdio.h>
 
@@ -21,6 +22,11 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
 
     int totalClientesCaixas = 0; //Total de Clientes nas Filas da Caixa
     float mediaClientesCaixas = 0; //Media de Clientes nas filas das Caixas
+
+    //Valores para guardar
+    int totalClientesAtendidos = 0;
+    int totalProdutosVendidos = 0;
+    float somaTempoEspera = 0;
 
     printf("Quanto tempo quer que a simulação dure em minutos(cada min é 1 seg)?\n");
     scanf("%d", &endTime);
@@ -186,10 +192,15 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                     //Se ja passou o tempo de passar os produtos
                     if (clientEmFila->tempoPassarProdutos <= 0.0) {
                         //O cliente vai sair
+
+                        totalClientesAtendidos++;
+                        totalProdutosVendidos += clientEmFila->totalProdutos;
+                        somaTempoEspera += (float)*time - clientEmFila->tempoChegadaFila;
+
                         /*printf("Cliente %s saiu!", clientEmFila->name);*/
 
                         //Verificar se ficou muito tempo á espera
-                        if (*time - clientEmFila->tempoChegadaFila >= config.MAX_ESPERA) {
+                        if ((float)*time - clientEmFila->tempoChegadaFila >= (float)config.MAX_ESPERA) {
                             //oferecer 1 produto(mais barato)
                             int nP = 0;
                             float precoP = 999;
@@ -234,6 +245,12 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
 
         Sleep(1000);
     }
+
+    saveSimulationHistory(1, *time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas);
+
+    printf("Simulação terminada! Dados guardados no ficheiro 'historial_simulacoes.csv'.\n");
+    Sleep(2000);
+
     return;
 }
 
