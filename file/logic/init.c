@@ -32,6 +32,9 @@ FilaCaixa *createFilaCaixa(int numCaixas) {
         caixa->state = 0;
         caixa->resp = malloc(sizeof(Funcionario));
 
+        caixa->totalClientesAtendidos = 0;
+        caixa->totalProdutosVendidos = 0;
+
         fila->numClients = 0;
         fila->head = fila->tail = NULL;
 

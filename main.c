@@ -117,6 +117,9 @@ int main(void) {
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(4))) {
+                    case 1:
+                        readSimulationHistory();
+                        break;
                     default:
                         break;
                 }

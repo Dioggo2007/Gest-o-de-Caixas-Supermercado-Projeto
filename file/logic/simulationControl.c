@@ -19,9 +19,12 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
     //possibilidade de ser probabilidade maior que 100%
     int clientProb = 0;
 
-
+    //Desenpenho
+    int duracao = 0;
     int totalClientesCaixas = 0; //Total de Clientes nas Filas da Caixa
     float mediaClientesCaixas = 0; //Media de Clientes nas filas das Caixas
+    int nProdutosOferecidos = 0;
+    float valorProdutosOferecidos = 0.0;
 
     //Valores para guardar
     int totalClientesAtendidos = 0;
@@ -29,12 +32,12 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
     float somaTempoEspera = 0;
 
     printf("Quanto tempo quer que a simulação dure em minutos(cada min é 1 seg)?\n");
-    scanf("%d", &endTime);
+    scanf("%d", &duracao);
     printf("Qual a velocidade quer que a simulação corra (x alterações por segundo)?\n");
     scanf("%d", &velSec);
     printf("Qual a probabilidade que quer que o cliente apareca a cada segundo?\n");
     scanf("%d", &clientProb);
-    endTime += *time;
+    endTime = duracao + *time;
 
     for (int i = 0; i < *totalCaixasAbertas; i++) {
         if (filaCaixa[i].cashier->state)
@@ -193,6 +196,11 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                     if (clientEmFila->tempoPassarProdutos <= 0.0) {
                         //O cliente vai sair
 
+                        //Guardar desempenho
+
+                        filaCaixa[c].cashier->totalClientesAtendidos++;
+                        filaCaixa[c].cashier->totalProdutosVendidos += clientEmFila->totalProdutos;
+
                         totalClientesAtendidos++;
                         totalProdutosVendidos += clientEmFila->totalProdutos;
                         somaTempoEspera += (float)*time - clientEmFila->tempoChegadaFila;
@@ -212,7 +220,9 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                                 }
                             }
                             clientEmFila->custoTotalProdutos -= precoP;
-                            printf("O cliente %s, levou o produto %s de graça!", clientEmFila->name, clientEmFila->produtos[nP].name);
+                            valorProdutosOferecidos += precoP;
+                            nProdutosOferecidos++;
+                            /*printf("O cliente %s, levou o produto %s de graça!", clientEmFila->name, clientEmFila->produtos[nP].name);*/
                         }
 
                         removeFromQueue(filaCaixa[c].fila);
@@ -246,7 +256,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
         Sleep(1000);
     }
 
-    saveSimulationHistory(1, *time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas);
+    saveSimulationHistory(*time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas, nProdutosOferecidos, valorProdutosOferecidos, clientProb);
 
     printf("Simulação terminada! Dados guardados no ficheiro 'historial_simulacoes.csv'.\n");
     Sleep(2000);

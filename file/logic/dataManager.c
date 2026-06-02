@@ -262,7 +262,7 @@ Dados readConfig() {
     return dados;
 }
 
-int saveSimulationHistory(int nSimulation, int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas) {
+int saveSimulationHistory(int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas, int nProdutosOferecidos, float valorProdutosOferecidos, int clientProb) {
     FILE *f = fopen(SIMULATIONHISTORY_PATH, "a");
 
     if (!f) {
@@ -276,8 +276,84 @@ int saveSimulationHistory(int nSimulation, int tempo, int clientesAtendidos, int
     char data_hora[20];
     strftime(data_hora, sizeof(data_hora), "%d-%m-%Y-%H:%M:%S", t);
 
-    fprintf(f, " %s; %d; %d; %d; %.2f; %.2f\n", data_hora, tempo, clientesAtendidos, produtosVendidos, tempoMedio/clientesAtendidos, vendas);
+    fprintf(f, "%s; %d; %d; %d; %.2f; %.2f; %d; %.2f; %d\n", data_hora, tempo, clientesAtendidos, produtosVendidos, tempoMedio/clientesAtendidos, vendas, nProdutosOferecidos, valorProdutosOferecidos, clientProb);
 
     fclose(f);
+    return 1;
+}
+
+int readSimulationHistory() {
+    FILE *f = fopen(SIMULATIONHISTORY_PATH, "r");
+    if (!f) {
+        // Error in file opening
+        printf("Can't open file\n");
+        return 0;
+    }
+    system("cls");
+    printf("\n");
+    printf("============================================================================================================================\n");
+    printf("|                                                HISTORICO DE SIMULACOES                                                   |\n");
+    printf("============================================================================================================================\n");
+    printf("| %-12s | %-8s | %-12s | %-12s | %-12s | %-10s | %-12s | %-12s | %-12s\n",
+           "Data", "Tempo", "Clientes", "Produtos", "Tempo Medio", "Vendas ($)", "Prod. Ofer.", "Valor Ofer.", "Prob. Cliente");
+    printf("----------------------------------------------------------------------------------------------------------------------------\n");
+
+    char buffer[1024];
+
+    int row = 0;
+
+    while (fgets(buffer,sizeof(buffer), f) != NULL) {
+        if (buffer[0] == '\n') continue;
+        //Se for colocado uma linha com os nomes da colunas
+        /*if (row == 1)
+            continue;*/
+        char data[20];
+        int tempo;
+        int clientesAtendidos;
+        int produtosVendidos;
+        float tempoMedio;
+        float vendas;
+        int nProdutosOferecidos;
+        float valorProdutosOferecidos;
+        int clientProb;
+
+        sscanf(buffer, "%[^;]; %d; %d; %d; %f; %f; %d; %f; %d",
+        data,
+        &tempo,
+        &clientesAtendidos,
+        &produtosVendidos,
+        &tempoMedio,
+        &vendas,
+        &nProdutosOferecidos,
+        &valorProdutosOferecidos,
+        &clientProb
+        );
+
+        printf("| %-12s | %8d | %12d | %12d | %12.2f | %10.2f | %12d | %12.2f | %12d |\n",
+                   data,
+                   tempo,
+                   clientesAtendidos,
+                   produtosVendidos,
+                   tempoMedio,
+                   vendas,
+                   nProdutosOferecidos,
+                   valorProdutosOferecidos,
+                   clientProb);
+        row++;
+    }
+
+    if (row > 0) {
+        printf("  Total de registos carregados: %d\n", row);
+    } else {
+        printf("  Nenhum registo de simulacao encontrado no ficheiro.\n");
+    }
+    printf("\n");
+
+    // Close the file
+    fclose(f);
+
+    printf("Enter para continuar...");
+    scanf("%*c");
+    scanf("%*c");
     return 1;
 }

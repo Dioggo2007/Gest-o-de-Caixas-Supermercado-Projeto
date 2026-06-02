@@ -39,6 +39,7 @@ Dados readConfig();
 // Retorna 1 se sucesso, 0 se erro
 int writeConfig(Dados *config);
 
-int saveSimulationHistory(int nSimulation, int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas);
+int saveSimulationHistory(int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas, int nProdutosOferecidos, float valorProdutosOferecidos, int clientProb);
 
+int readSimulationHistory();
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_DATAMANAGER_H

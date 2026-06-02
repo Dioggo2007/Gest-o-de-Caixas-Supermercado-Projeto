@@ -36,6 +36,8 @@ typedef struct {
     int id;
     int state; // 1: Aberto; 0: Fechado
     Funcionario *resp;
+    int totalClientesAtendidos;
+    int totalProdutosVendidos;
 }Caixa;
 
 typedef struct clientList {
