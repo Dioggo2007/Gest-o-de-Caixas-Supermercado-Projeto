@@ -246,8 +246,8 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
             *time += 1;
         }
 
-        printf("endTime: %d, time:%d, velSec: %d\n", endTime, *time, velSec);
-        printf("Clientes ativos: %d", *clienteAtivos);
+        /*printf("endTime: %d, time:%d, velSec: %d\n", endTime, *time, velSec);
+        printf("Clientes ativos: %d", *clienteAtivos);*/
         printHeader(*time, *totalCaixasAbertas, config.N_CAIXAS, *vendas);
         for(int c = 1; c <= ceil(config.N_CAIXAS / 3.0); c++) {
             printCashiers(c, filaCaixa, config.N_CAIXAS);
