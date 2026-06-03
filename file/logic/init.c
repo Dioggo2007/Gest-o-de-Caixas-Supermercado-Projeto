@@ -47,7 +47,12 @@ FilaCaixa *createFilaCaixa(int numCaixas) {
 
 Produto *generateProductList(Produto *produtos, int numTotalProdutos, int *nProdutos) {
     Produto *listaProdutos;
-    int numProd = (rand() % 10) + 1;
+    int numProd = 0;
+    if (*nProdutos == 0) {
+        numProd = (rand() % 10) + 1;
+    }else {
+        numProd = *nProdutos;
+    }
 
     listaProdutos = malloc(sizeof(Produto) * numProd);
 

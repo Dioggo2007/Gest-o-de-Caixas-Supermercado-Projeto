@@ -14,6 +14,7 @@
 #define CLIENTES_PATH "db/clientes.txt"
 #define CONFIG_PATH "db/config.txt"
 #define SIMULATIONHISTORY_PATH "db/historial_simulacoes.csv"
+#define SIMULATIONDATA_PATH "db/dados.txt"
 #define TAMANHO_LINHA 100
 
 //Função util para contar linhas e diminuir linhas de codigo repetidas
@@ -42,4 +43,9 @@ int writeConfig(Dados *config);
 int saveSimulationHistory(int tempo, int clientesAtendidos, int produtosVendidos, float tempoMedio, float vendas, int nProdutosOferecidos, float valorProdutosOferecidos, int clientProb);
 
 int readSimulationHistory();
+
+int saveSimulationState(int tempo, float vendas, FilaCaixa *fila_caixa, int nCaixas);
+
+int readSimulationState(FilaCaixa *filaCaixas, int *totalCaixasAbertas, Cliente *clientes, int numClientes, Produto *produtos, int numTotalProdutos, Funcionario *funcionarios, int totalFuncionarios, int *tempoGlobal, float *vendasGlobais);
+
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_DATAMANAGER_H

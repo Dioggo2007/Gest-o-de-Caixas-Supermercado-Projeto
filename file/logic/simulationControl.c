@@ -25,6 +25,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
     float mediaClientesCaixas = 0; //Media de Clientes nas filas das Caixas
     int nProdutosOferecidos = 0;
     float valorProdutosOferecidos = 0.0;
+    int vendasIniciais = *vendas;
 
     //Valores para guardar
     int totalClientesAtendidos = 0;
@@ -256,7 +257,8 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
         Sleep(1000);
     }
 
-    saveSimulationHistory(*time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas, nProdutosOferecidos, valorProdutosOferecidos, clientProb);
+    saveSimulationHistory(*time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas - vendasIniciais, nProdutosOferecidos, valorProdutosOferecidos, clientProb);
+    saveSimulationState(*time, *vendas, filaCaixa, config.N_CAIXAS);
 
     printf("Simulação terminada! Dados guardados no ficheiro 'historial_simulacoes.csv'.\n");
     Sleep(2000);

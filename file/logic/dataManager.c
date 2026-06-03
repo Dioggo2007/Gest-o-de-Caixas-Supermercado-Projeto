@@ -11,6 +11,8 @@
 #include <time.h>
 #include "../../header/logic/errorlogs.h"
 #include "../../header/frame/printError.h"
+#include "../../header/logic/init.h"
+#include "../../header/logic/queueManager.h"
 
 #include "../../header/logic/struct.h"
 
@@ -355,5 +357,111 @@ int readSimulationHistory() {
     printf("Enter para continuar...");
     scanf("%*c");
     scanf("%*c");
+    return 1;
+}
+
+int saveSimulationState(int tempo, float vendas, FilaCaixa *fila_caixa, int nCaixas) {
+    FILE *f = fopen(SIMULATIONDATA_PATH, "w");
+    if (!f) {
+        printf("Can't open file\n");
+        scanf("%*c");
+        scanf("%*c");
+        return 0;
+    }
+
+    fprintf(f, "TEMPO: %d\n", tempo);
+    fprintf(f, "VENDAS: %.2f\n", vendas);
+    fprintf(f, "TOTAL_CAIXAS: %d\n", nCaixas);
+
+    for (int i = 0; i < nCaixas; i++) {
+        //Guardar estado, totalClientes atendidos e total produtos vendidos
+        fprintf(f, "Caixa%d: %d, %d, %d\n", i + 1, fila_caixa[i].cashier->state, fila_caixa[i].cashier->totalClientesAtendidos, fila_caixa[i].cashier->totalProdutosVendidos);
+        fprintf(f, "%d\n", fila_caixa[i].fila->numClients); // Número de clientes na fila
+
+        // 3. Guardar os clientes que estão dentro desta fila
+        ListaCliente *atual = fila_caixa[i].fila->head;
+        while (atual != NULL) {
+            // Guardamos o id e o número de produtos de cada um, e o tempo que chegou á fila
+            fprintf(f, "P%d: %d, %f\n", atual->client->id, atual->client->totalProdutos, atual->client->tempoChegadaFila);
+            atual = atual->prev;
+        }
+    }
+    fclose(f);
+    return 1;
+}
+
+int readSimulationState(FilaCaixa *filaCaixas, int *totalCaixasAbertas, Cliente *clientes, int numClientes, Produto *produtos, int numTotalProdutos, Funcionario *funcionarios, int totalFuncionarios, int *tempoGlobal, float *vendasGlobais) {
+    FILE *f = fopen(SIMULATIONDATA_PATH, "r");
+    if (!f) {
+        printf("Can't open file\n");
+        return 0;
+    }
+
+    char buffer[TAMANHO_LINHA];
+    int totalCaixasArquivo = 0;
+    *totalCaixasAbertas = 0;
+
+    if (fgets(buffer, sizeof(buffer), f)) sscanf(buffer, "TEMPO: %d", tempoGlobal);
+    if (fgets(buffer, sizeof(buffer), f)) sscanf(buffer, "VENDAS: %f", vendasGlobais);
+    if (fgets(buffer, sizeof(buffer), f)) sscanf(buffer, "TOTAL_CAIXAS: %d", &totalCaixasArquivo);
+
+    for (int i = 0; i < totalCaixasArquivo; i++) {
+        int idCaixa, estadoCaixa, clientesAtendidos, produtosVendidos = 0;
+
+        if (fgets(buffer, sizeof(buffer), f)) {
+            sscanf(buffer, "Caixa%d: %d, %d, %d", &idCaixa, &estadoCaixa, &clientesAtendidos, &produtosVendidos);
+
+            int index = idCaixa - 1;
+
+            filaCaixas[index].cashier->state = estadoCaixa;
+            filaCaixas[index].cashier->totalClientesAtendidos = clientesAtendidos;
+            filaCaixas[index].cashier->totalProdutosVendidos = produtosVendidos;
+
+            if (estadoCaixa == 1) {
+                *filaCaixas[index].cashier->resp = generateFuncionario(funcionarios, totalFuncionarios);
+                (*totalCaixasAbertas)++;
+            }
+
+            int numClientesFila = 0;
+            if (fgets(buffer, sizeof(buffer), f)) {
+                sscanf(buffer, "%d", &numClientesFila);
+            }
+
+            for (int c = 0; c < numClientesFila; c++) {
+                int idCliente;
+                int nProdutos;
+                float tempoChegadaFila;
+
+                if (fgets(buffer, sizeof(buffer), f)) {
+                    sscanf(buffer, "P%d: %d, %f", &idCliente, &nProdutos, &tempoChegadaFila);
+
+                    Cliente *clientLido = malloc(sizeof(Cliente));
+
+                    for (int j = 0; j < numClientes; j++) {
+                        if (clientes[j].id == idCliente) {
+                            *clientLido = clientes[j];
+                        }
+                    }
+                    if (clientLido->id != idCliente) {
+                        free(clientLido);
+                        return 0;
+                    }
+
+                    clientLido->produtos = generateProductList(produtos, numTotalProdutos, &clientLido->totalProdutos);
+                    clientLido->tempoChegadaFila = tempoChegadaFila;
+                    //calculo de tempo a pegar nos produtos e custo total
+                    for (int p = 0; p < clientLido->totalProdutos; p++) {
+                        clientLido->tempoPegarProdutos += clientLido->produtos[p].purchaseTime/60;
+                        clientLido->custoTotalProdutos += clientLido->produtos[p].price;
+                    }
+                    //Calculo de tempo a passar os produtos na caixa
+                    for (int p = 0; p < clientLido->totalProdutos; p++) {
+                        clientLido->tempoPassarProdutos += clientLido->produtos[p].cashierTime /60;
+                    }
+                    addToQueue(clientLido, filaCaixas[index].fila);
+                }
+            }
+        }
+    }
     return 1;
 }
