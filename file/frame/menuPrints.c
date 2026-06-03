@@ -170,17 +170,19 @@ int printFooter(int opcao) {
             printf("Opções: [1]Iniciar Simulação | [2]Limpar Simulação | [3]Voltar\n");
             return 3;
         case 2:
-            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario | [3]Mostrar Clientes | [4]Voltar\n");
-            return 4;
+            printf("Opções: [1]Abrir/Fechar Caixa | [2]Mudar Funcionario\n"
+                          "        [3]Mostrar Clientes | [4]Estatísticas | [5]Voltar\n");
+            return 5;
         case 3:
-            printf("Opções: [1]Procurar Cliente Nome | [2]Procurar Cliente Id | [3]Adicionar Cliente | [4]Remover Cliente | [5]Voltar\n");
+            printf("Opções: [1]Procurar Cliente Nome | [2]Procurar Cliente Id\n "
+                          "        [3]Adicionar Cliente | [4]Remover Cliente | [5]Voltar\n");
             return 5;
         case 4:
             printf("Opções: [1]Historico | [2]Utilização de Memoria | [3]Configurações | [4]Voltar\n");
             return 4;
         default:
-            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros\n");
-            return 4;
+            printf("Opções: [1]Simulação | [2]Caixas | [3]Clientes | [4]Outros | [5]Sair\n");
+            return 5;
     }
 }
 

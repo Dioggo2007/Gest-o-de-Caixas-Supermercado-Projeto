@@ -363,9 +363,7 @@ int readSimulationHistory() {
 int saveSimulationState(int tempo, float vendas, FilaCaixa *fila_caixa, int nCaixas) {
     FILE *f = fopen(SIMULATIONDATA_PATH, "w");
     if (!f) {
-        printf("Can't open file\n");
-        scanf("%*c");
-        scanf("%*c");
+        createLog("ERROR", "Nao foi possivel abrir/criar o ficheiro db/dados.txt para guardar o estado.");
         return 0;
     }
 
@@ -393,7 +391,7 @@ int saveSimulationState(int tempo, float vendas, FilaCaixa *fila_caixa, int nCai
 int readSimulationState(FilaCaixa *filaCaixas, int *totalCaixasAbertas, Cliente *clientes, int numClientes, Produto *produtos, int numTotalProdutos, Funcionario *funcionarios, int totalFuncionarios, int *tempoGlobal, float *vendasGlobais) {
     FILE *f = fopen(SIMULATIONDATA_PATH, "r");
     if (!f) {
-        printf("Can't open file\n");
+        createLog("WARNING", "Nao foi possivel abrir/criar o ficheiro db/dados.txt para guardar o estado.");
         return 0;
     }
 

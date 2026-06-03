@@ -96,9 +96,17 @@ int main(void) {
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
                 printCashiers(page, filaCaixas, config.N_CAIXAS);
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(2))) {
+                    case 1:
+                        changeCashierState(filaCaixas, config.N_CAIXAS, funcionarios, totalFuncionarios);
+                        break;
+                    case 2:
+                        changeWorker(filaCaixas, config.N_CAIXAS, funcionarios, totalFuncionarios);
+                        break;
                     case 3:
                         printCashierClients(filaCaixas, config.N_CAIXAS);
                         break;
+                    case 4:
+                        calcularEstatisticasCaixas(filaCaixas, config.N_CAIXAS);
                     default:
                         break;
                 }
@@ -125,6 +133,9 @@ int main(void) {
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(4))) {
                     case 1:
                         readSimulationHistory();
+                        break;
+                    case 2:
+                        calcularMemoria(totalProdutos, totalClientes, totalFuncionarios, config.N_CAIXAS, clientesEmCompra);
                         break;
                     default:
                         break;
@@ -162,7 +173,7 @@ int main(void) {
 
     /*int nProdutos;
     Produto *listaProdutos = generateProductList(produtos, totalProdutos, &nProdutos);*/
-    for (int i = 0; i < 11; i++) {
+    /*for (int i = 0; i < 11; i++) {
         printf("Produto %d:\n", i + 1);
         printf("id: %d\n", produtos[i].id);
         printf("nome: %s\n", produtos[i].name);
@@ -171,7 +182,7 @@ int main(void) {
         printf("price: %.2f\n", (produtos[i].price == 0.00) ? 10000000 : produtos[i].price);
         printf("purchaseTime: %.2f\n", (produtos[i].purchaseTime == 0.00) ? 10000000 : produtos[i].purchaseTime);
         printf("cashierTime: %.2f\n", (produtos[i].cashierTime == 0.00) ? 10000000 : produtos[i].cashierTime);
-    }
+    }*/
 
     for (int i = 0; i < totalProdutos; i++) {
         if (produtos[i].name) free(produtos[i].name);

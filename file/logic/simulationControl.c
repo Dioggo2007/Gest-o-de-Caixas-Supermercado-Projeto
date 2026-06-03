@@ -129,7 +129,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                         filaCaixa[c].cashier->state = 1; // Abre a primeira caixa fechada que encontrar
                         *filaCaixa[c].cashier->resp = generateFuncionario(funcionarios, totalFuncionarios);
                         (*totalCaixasAbertas)++;
-                        printf("Caixa %d aberta", c);
+                        /*printf("Caixa %d aberta", c);*/
                         //Transferir metade dos clientes no fim da fila para a caixa nova
                         int pessoasAMover = maiorFila / 2;
                         for (int p = 0; p < pessoasAMover; p++) {
