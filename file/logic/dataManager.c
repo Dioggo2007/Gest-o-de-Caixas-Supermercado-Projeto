@@ -393,6 +393,12 @@ int readSimulationState(FilaCaixa *filaCaixas, int *totalCaixasAbertas, Cliente 
     if (!f) {
         createLog("WARNING", "Nao foi possivel abrir/criar o ficheiro db/dados.txt para guardar o estado.");
         return 0;
+    }else {
+        int d = 0;
+        printf("Pretende ler os dados da simulação anterior('1' se sim)?");
+        scanf("%d", &d);
+        if (d != 1)
+            return 0;
     }
 
     char buffer[TAMANHO_LINHA];

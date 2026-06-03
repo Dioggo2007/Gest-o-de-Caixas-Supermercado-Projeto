@@ -109,6 +109,7 @@ void searchClientName(Fila *clientesEmCompra, FilaCaixa *fila_caixa, Dados confi
 }
 
 void calcularEstatisticasCaixas(FilaCaixa *filaCaixas, int nCaixas) {
+    system("cls");
     int maxPessoas = -1;
     int idCaixaMaxPessoas = -1;
 
@@ -128,14 +129,17 @@ void calcularEstatisticasCaixas(FilaCaixa *filaCaixas, int nCaixas) {
         }
     }
 
-    printf("\n=== ESTATISTICAS GLOBAIS DAS CAIXAS ===\n");
+    printf("\n============== ESTATISTICAS GLOBAIS DAS CAIXAS ==============\n");
     if (maxPessoas > -1) {
         printf(" -> Caixa com MAIS clientes atendidos: Caixa %d (%d pessoas)\n", idCaixaMaxPessoas, maxPessoas);
         printf(" -> Caixa com MAIS produtos vendidos: Caixa %d (%d produtos)\n", idCaixaMaxProdutos, maxProdutos);
     } else {
         printf(" -> Nenhuma caixa realizou atendimentos ainda.\n");
     }
-    printf("=======================================\n");
+    printf("=============================================================\n");
+    printf("Enter para sair...");
+    scanf("%*c");
+    scanf("%*c");
 }
 
 void changeWorker(FilaCaixa *fila_caixa, int nCaixas, Funcionario *funcionarios, int totalFuncionarios) {

@@ -67,11 +67,7 @@ int main(void) {
     filaCaixas[0].cashier->state = 1;
     *filaCaixas[0].cashier->resp = generateFuncionario(funcionarios, totalFuncionarios);
 
-    int d = 0;
-    printf("Pretende ler os dados da simulação anterior('1' se sim)?");
-    scanf("%d", &d);
-    if (d == 1)
-        readSimulationState(filaCaixas, &totalCaixasAbertas, clientes, totalClientes, produtos, totalProdutos, funcionarios, totalFuncionarios, &tempo, &vendas);
+    readSimulationState(filaCaixas, &totalCaixasAbertas, clientes, totalClientes, produtos, totalProdutos, funcionarios, totalFuncionarios, &tempo, &vendas);
 
     do {
         system("cls");
