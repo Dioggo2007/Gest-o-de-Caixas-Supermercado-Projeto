@@ -66,7 +66,7 @@ int removeSpecificClient(Fila *fila, int idCliente) {
             free(listaRemove);
             return 1;
         }
-        listaRemove = listaRemove->next;
+        listaRemove = listaRemove->prev;
     }
     return 0;
 }

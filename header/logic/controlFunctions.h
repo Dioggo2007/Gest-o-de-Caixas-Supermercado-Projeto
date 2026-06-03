@@ -18,6 +18,13 @@ void calcularEstatisticasCaixas(FilaCaixa *filaCaixas, int nCaixas);
 void changeWorker(FilaCaixa *fila_caixa, int nCaixas, Funcionario *funcionarios, int totalFuncionarios);
 void changeCashierState(FilaCaixa *fila_caixa, int nCaixas, Funcionario *funcionarios, int totalFuncionarios);
 
+//Funções para CLientes
+
+void addClient(Cliente *clientes, int numClientes, Produto *produtos, int totalProdutos, Fila *clientes_corredor, FilaCaixa *fila_caixas, Dados config, int tempo);
+void removeClient(FilaCaixa *fila_caixa, int nCaixas, Fila *clientes_corredor);
+
 void calcularMemoria(int totalProdutos, int totalClientes, int totalFuncionarios, int totalCaixas, Fila *corredor);
+
+
 
 #endif //GEST_O_DE_CAIXAS_SUPERMERCADO_PROJETO_CONTROLFUNCTIONS_H

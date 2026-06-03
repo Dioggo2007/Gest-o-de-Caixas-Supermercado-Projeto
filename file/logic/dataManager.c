@@ -445,6 +445,7 @@ int readSimulationState(FilaCaixa *filaCaixas, int *totalCaixasAbertas, Cliente 
                         return 0;
                     }
 
+                    clientLido->totalProdutos = nProdutos;
                     clientLido->produtos = generateProductList(produtos, numTotalProdutos, &clientLido->totalProdutos);
                     clientLido->tempoChegadaFila = tempoChegadaFila;
                     //calculo de tempo a pegar nos produtos e custo total

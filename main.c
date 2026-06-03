@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include "header/logic/struct.h"
 #include "header/logic/dataManager.h"
@@ -94,7 +95,9 @@ int main(void) {
             case 2://Caixas
                 system("cls");
                 printHeader(tempo, totalCaixasAbertas, config.N_CAIXAS, vendas);
-                printCashiers(page, filaCaixas, config.N_CAIXAS);
+                for(int c = 1; c <= ceil(config.N_CAIXAS / 3.0); c++) {
+                    printCashiers(c, filaCaixas, config.N_CAIXAS);
+                }
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(2))) {
                     case 1:
                         changeCashierState(filaCaixas, config.N_CAIXAS, funcionarios, totalFuncionarios);
@@ -122,6 +125,11 @@ int main(void) {
                     case 2:
                         searchClientId(clientesEmCompra, filaCaixas, config);
                         break;
+                    case 3:
+                        addClient(clientes, totalClientes, produtos, totalProdutos, clientesEmCompra, filaCaixas, config, tempo);
+                        break;
+                    case 4:
+                        removeClient(filaCaixas, config.N_CAIXAS, clientesEmCompra);
                     default:
                         break;
                 }

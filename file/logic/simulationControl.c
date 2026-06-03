@@ -5,6 +5,9 @@
 #include <windows.h>
 
 #include "../../header/logic/simulationControl.h"
+
+#include <math.h>
+
 #include "../../header/frame/menuPrints.h"
 #include "../../header/logic/init.h"
 #include "../../header/logic/queueManager.h"
@@ -136,7 +139,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                             printf("%d", p);
                             Cliente *clienteMovido = filaCaixa[caixaMaisCheia].fila->tail->client;
                             removeLastFromQueue(filaCaixa[caixaMaisCheia].fila);
-                            printf("numclientes na caixa cheia %d", filaCaixa[caixaMaisCheia].fila->numClients);
+                            /*printf("numclientes na caixa cheia %d", filaCaixa[caixaMaisCheia].fila->numClients);*/
                             if (clienteMovido != NULL) {
                                 // Como ele vai para uma fila nova, entra normalmente pela ponta
                                 addToQueue(clienteMovido, filaCaixa[c].fila);
@@ -246,8 +249,9 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
         printf("endTime: %d, time:%d, velSec: %d\n", endTime, *time, velSec);
         printf("Clientes ativos: %d", *clienteAtivos);
         printHeader(*time, *totalCaixasAbertas, config.N_CAIXAS, *vendas);
-        printCashiers(1, filaCaixa, config.N_CAIXAS);
-        printCashiers(2, filaCaixa, config.N_CAIXAS);
+        for(int c = 1; c <= ceil(config.N_CAIXAS / 3.0); c++) {
+            printCashiers(c, filaCaixa, config.N_CAIXAS);
+        }
 
         printf("Clientes em compras: %d", clientesEmCompras->numClients);
 
