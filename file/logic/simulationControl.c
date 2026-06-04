@@ -264,7 +264,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
     saveSimulationHistory(*time, totalClientesAtendidos, totalProdutosVendidos, somaTempoEspera, *vendas - vendasIniciais, nProdutosOferecidos, valorProdutosOferecidos, clientProb);
     saveSimulationState(*time, *vendas, filaCaixa, config.N_CAIXAS);
 
-    printf("Simulação terminada! Dados guardados no ficheiro 'historial_simulacoes.csv'.\n");
+    printf("\n\nSimulação terminada! Dados guardados no ficheiro 'historial_simulacoes.csv'.\n");
     Sleep(2000);
 
     return;

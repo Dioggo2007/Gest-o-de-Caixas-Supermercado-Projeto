@@ -73,7 +73,6 @@ int removeSpecificClient(Fila *fila, int idCliente) {
 
 int removeLastFromQueue(Fila *fila) {
     if (fila->numClients == 0 || fila->tail == NULL) return 0;
-    printf("%d", fila->numClients);
     ListaCliente *listaRemove = fila->tail;
     fila->tail = listaRemove->next;
     if (fila->tail == NULL) fila->head = NULL;

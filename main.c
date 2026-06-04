@@ -214,8 +214,5 @@ int main(void) {
     }
     free(funcionarios);
 
-    scanf("%*c");
-    scanf("%*c");
-
     return 0;
 }

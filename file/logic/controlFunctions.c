@@ -263,7 +263,7 @@ void removeClient(FilaCaixa *fila_caixa, int nCaixas, Fila *clientes_corredor) {
         atual = fila_caixa[i].fila->head;
         for (int j = 0; j < fila_caixa[i].fila->numClients; j++) {
             if (atual->client->id == idCliente) {
-                printf("%d",removeSpecificClient(fila_caixa[i].fila, idCliente));
+                removeSpecificClient(fila_caixa[i].fila, idCliente);
                 printf("Cliente foi removido!");
                 scanf("%*c");
                 scanf("%*c");
