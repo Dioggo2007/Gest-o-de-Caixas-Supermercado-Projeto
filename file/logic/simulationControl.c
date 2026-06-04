@@ -136,7 +136,7 @@ void startSimulation(int *time, FilaCaixa *filaCaixa, int *totalCaixasAbertas, f
                         //Transferir metade dos clientes no fim da fila para a caixa nova
                         int pessoasAMover = maiorFila / 2;
                         for (int p = 0; p < pessoasAMover; p++) {
-                            printf("%d", p);
+                            /*printf("%d", p);*/
                             Cliente *clienteMovido = filaCaixa[caixaMaisCheia].fila->tail->client;
                             removeLastFromQueue(filaCaixa[caixaMaisCheia].fila);
                             /*printf("numclientes na caixa cheia %d", filaCaixa[caixaMaisCheia].fila->numClients);*/

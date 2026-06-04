@@ -84,6 +84,9 @@ int main(void) {
                     case 1:
                         system("cls");
                         startSimulation(&tempo, filaCaixas, &totalCaixasAbertas, &vendas, config, clientesEmCompra, &clienteAtivos, clientes, totalClientes, produtos, totalProdutos, funcionarios, totalFuncionarios);
+                        break;
+                    case 2:
+                        clearSimulation(&tempo, filaCaixas, &totalCaixasAbertas, &vendas, config, clientesEmCompra, &clienteAtivos, funcionarios, totalFuncionarios);
                     default:
                         break;
                 }
@@ -97,9 +100,11 @@ int main(void) {
                 switch (escolherOpcaoMenuPrincipal(0, printFooter(2))) {
                     case 1:
                         changeCashierState(filaCaixas, config.N_CAIXAS, funcionarios, totalFuncionarios);
+                        saveSimulationState(tempo, vendas, filaCaixas, config.N_CAIXAS);
                         break;
                     case 2:
                         changeWorker(filaCaixas, config.N_CAIXAS, funcionarios, totalFuncionarios);
+                        saveSimulationState(tempo, vendas, filaCaixas, config.N_CAIXAS);
                         break;
                     case 3:
                         printCashierClients(filaCaixas, config.N_CAIXAS);
@@ -123,9 +128,11 @@ int main(void) {
                         break;
                     case 3:
                         addClient(clientes, totalClientes, produtos, totalProdutos, clientesEmCompra, filaCaixas, config, tempo);
+                        saveSimulationState(tempo, vendas, filaCaixas, config.N_CAIXAS);
                         break;
                     case 4:
                         removeClient(filaCaixas, config.N_CAIXAS, clientesEmCompra);
+                        saveSimulationState(tempo, vendas, filaCaixas, config.N_CAIXAS);
                     default:
                         break;
                 }

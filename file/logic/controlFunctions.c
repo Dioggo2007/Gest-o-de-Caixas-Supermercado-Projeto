@@ -8,8 +8,58 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../header/logic/dataManager.h"
 #include "../../header/logic/queueManager.h"
 
+void clearSimulation(int *time, FilaCaixa *fila_caixa, int *totalCaixasAbertas ,float *vendas, Dados config, Fila *clientes_corredor, int *clienteAtivos, Funcionario *funcionarios, int totalFuncionarios) {
+    system("cls");
+    int d;
+    printf("Confirma que quer limpar os dados do Simulador?('1' se sim)");
+    scanf("%d", &d);
+    if (d != 1)
+        return;
+    //Esvaziar corredor
+    while (clientes_corredor->numClients > 0) {
+        Cliente *clienteRemovido = clientes_corredor->head->client;
+        removeFromQueue(clientes_corredor);
+        if (clienteRemovido != NULL) {
+            free(clienteRemovido->produtos);
+            free(clienteRemovido);
+        }
+    }
+    //Esvaziar caixas
+    for (int i = 0; i < config.N_CAIXAS; i++) {
+        while (fila_caixa[i].fila->numClients > 0) {
+            Cliente *clienteRemovido = fila_caixa[i].fila->head->client;
+            removeFromQueue(fila_caixa[i].fila);
+
+            if (clienteRemovido != NULL) {
+                free(clienteRemovido->produtos);
+                free(clienteRemovido);
+            }
+
+        }
+
+        fila_caixa[i].cashier->totalClientesAtendidos = 0;
+        fila_caixa[i].cashier->totalProdutosVendidos = 0;
+
+        if (i == 0) {
+            fila_caixa[i].cashier->state = 1;
+            *fila_caixa[i].cashier->resp = generateFuncionario(funcionarios, totalFuncionarios);
+        } else {
+            fila_caixa[i].cashier->state = 0;
+        }
+    }
+
+    *time = 0;
+    *clienteAtivos = 0;
+    *vendas = 0;
+    *totalCaixasAbertas = 1;
+
+    saveSimulationState(*time, *vendas, fila_caixa, config.N_CAIXAS);
+
+
+}
 
 void searchClientId(Fila *clientesEmCompra, FilaCaixa *fila_caixa, Dados config) {
     int id;

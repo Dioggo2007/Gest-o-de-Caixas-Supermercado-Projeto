@@ -9,6 +9,9 @@
 #include "../frame/menuPrints.h"
 #include  "init.h"
 
+//Funções Simulador
+void clearSimulation(int *time, FilaCaixa *fila_caixa, int *totalCaixasAbertas ,float *vendas, Dados config, Fila *clientes_corredor, int *clienteAtivos, Funcionario *funcionarios, int totalFuncionarios);
+
 //Funções para clientes
 void searchClientId(Fila *clientesEmCompra, FilaCaixa *fila_caixa, Dados config);
 void searchClientName(Fila *clientesEmCompra, FilaCaixa *fila_caixa, Dados config);
